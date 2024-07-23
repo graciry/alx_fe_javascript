@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorite Quotes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #quote-list {
+            margin-top: 20px;
+        }
+        .quote-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .remove-btn {
+            color: red;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <h1>Favorite Quotes</h1>
+        <div>
+            <input type="text" id="quote-input" placeholder="Enter your favorite quote">
+            <input type="text" id="author-input" placeholder="Enter the author">
+            <button id="add-quote-btn">Add Quote</button>
+        </div>
+        <div id="quote-list"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
