@@ -1,75 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Favorite Quotes</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        #quote-list {
-            margin-top: 20px;
-        }
-        .quote-item {
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .remove-btn {
-            color: red;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-    </style>
+    <title>Dynamic Quote Generator</title>
 </head>
+
 <body>
-    <div id="app-container">
-        <h1>Favorite Quotes</h1>
-        <div>
-            <input type="text" id="quote-input" placeholder="Enter your favorite quote">
-            <input type="text" id="author-input" placeholder="Enter the author">
-            <button id="add-quote-btn">Add Quote</button>
-        </div>
-        <div id="quote-list"></div>
+    <h1>Dynamic Quote Generator</h1>
+    <div>
+        <select id="categoryFilter" onchange="filterQuotes()">
+            <option value="all">All Categories</option>
+        </select>
+    </div>
+    <div id="quoteDisplay"></div>
+    <button id="newQuote">Show New Quote</button>
+    <div>
+        <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+        <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+        <button id="addQuoteButton">Add Quote</button>
     </div>
     <button id="exportQuotes">Export Quotes</button>
-
-<script>
-  // Function to export quotes to a JSON file
-  function exportQuotes() {
-    const quotesJson = JSON.stringify(quotes, null, 2);
-    const blob = new Blob([quotesJson], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'quotes.json';
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  document.getElementById('exportQuotes').addEventListener('click', exportQuotes);
-</script>
-<input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
-
-<script>
-  // Function to import quotes from a JSON file
-  function importFromJsonFile(event) {
-    const fileReader = new FileReader();
-    fileReader.onload = function(event) {
-      const importedQuotes = JSON.parse(event.target.result);
-      quotes.push(...importedQuotes);
-      saveQuotes();
-      alert('Quotes imported successfully!');
-    };
-    fileReader.readAsText(event.target.files[0]);
-  }
-</script>
+    <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+    <div id="conflict-resolution" style="display: none;">
+        <p>Conflicts detected. Please review the changes.</p>
+        <button id="resolve-conflicts-btn">Resolve Conflicts</button>
+    </div>
 
 
-
-    <script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
