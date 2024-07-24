@@ -87,3 +87,57 @@ function getQuotesFromLocalStorage() {
     const quotes = localStorage.getItem('quotes');
     return quotes ? JSON.parse(quotes) : [];
 }
+// script.js
+
+// Load quotes from local storage if available
+let quotes = JSON.parse(localStorage.getItem('quotes')) || [
+    { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
+    { text: "Life is 10% what happens to us and 90% how we react to it.", category: "Life" }
+  ];
+  
+  // Function to save quotes to local storage
+  function saveQuotes() {
+    localStorage.setItem('quotes', JSON.stringify(quotes));
+  }
+  
+  // Function to show a random quote
+  function showRandomQuote() {
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    const randomQuote = quotes[randomIndex];
+    const quoteDisplay = document.getElementById('quoteDisplay');
+    quoteDisplay.innerHTML = `<p>${randomQuote.text}</p><p><em>${randomQuote.category}</em></p>`;
+    sessionStorage.setItem('lastQuote', JSON.stringify(randomQuote)); // Save the last viewed quote to session storage
+  }
+  
+  // Function to add a new quote
+  function addQuote() {
+    const newQuoteText = document.getElementById('newQuoteText').value;
+    const newQuoteCategory = document.getElementById('newQuoteCategory').value;
+    if (newQuoteText && newQuoteCategory) {
+      quotes.push({ text: newQuoteText, category: newQuoteCategory });
+      saveQuotes();
+      document.getElementById('newQuoteText').value = '';
+      document.getElementById('newQuoteCategory').value = '';
+      alert('New quote added!');
+    } else {
+      alert('Please enter both quote text and category.');
+    }
+  }
+  
+  // Add event listeners
+  document.getElementById('newQuote').addEventListener('click', showRandomQuote);
+  document.getElementById('addQuoteButton').addEventListener('click', addQuote);
+  
+  // Initial call to show a random quote
+  showRandomQuote();
+// script.js
+
+// Load the last viewed quote from session storage
+document.addEventListener('DOMContentLoaded', () => {
+    const lastQuote = JSON.parse(sessionStorage.getItem('lastQuote'));
+    if (lastQuote) {
+      const quoteDisplay = document.getElementById('quoteDisplay');
+      quoteDisplay.innerHTML = `<p>${lastQuote.text}</p><p><em>${lastQuote.category}</em></p>`;
+    }
+  });
+    
