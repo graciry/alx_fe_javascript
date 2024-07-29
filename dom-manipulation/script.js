@@ -198,6 +198,55 @@ async function syncQuotes() {
     console.error('Error syncing data:', error);
   }
 }
+// Function to sync local data with server data
+async function syncQuotes() {
+  try {
+    const serverQuotes = await fetchQuotesFromServer();
+    const localQuotes = JSON.parse(localStorage.getItem('quotes')) || [];
+
+    // Merge server data with local data
+    // Basic conflict resolution: Server data takes precedence
+    const mergedQuotes = serverQuotes.map(serverQuote => {
+      const localQuoteIndex = localQuotes.findIndex(localQuote => localQuote.id === serverQuote.id);
+      if (localQuoteIndex > -1) {
+        return serverQuote; // Use server data
+      }
+      return serverQuote;
+    });
+
+    // Add new quotes from server that are not in local storage
+    const newQuotes = serverQuotes.filter(serverQuote => !localQuotes.some(localQuote => localQuote.id === serverQuote.id));
+    mergedQuotes.push(...newQuotes);
+
+    // Save merged quotes to local storage
+    localStorage.setItem('quotes', JSON.stringify(mergedQuotes));
+
+    // Display updated quotes or handle conflict resolution UI here
+    // Example: update UI or trigger notification
+    console.log('Sync complete');
+    showSyncNotification(); // Show notification after syncing quotes
+  } catch (error) {
+    console.error('Error syncing data:', error);
+  }
+}
+
+// Function to display a notification when quotes are synced with the server
+function showSyncNotification() {
+  const notification = document.createElement('div');
+  notification.textContent = 'Quotes synced with server!';
+  notification.style.backgroundColor = '#dff0d8';
+  notification.style.color = '#3c763d';
+  notification.style.padding = '10px';
+  notification.style.marginTop = '10px';
+  notification.style.border = '1px solid #d6e9c6';
+  document.body.appendChild(notification);
+
+  // Automatically hide the notification after 5 seconds
+  setTimeout(() => {
+    document.body.removeChild(notification);
+  }, 5000);
+}
+
 
 
 // Polling interval (in milliseconds)
