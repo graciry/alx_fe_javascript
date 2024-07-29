@@ -154,19 +154,20 @@ populateCategories();
 
  
 
-  // Fetch data from the mock API
-  async function fetchQuotesFromServer() {
-    try {
-      const response = await fetch(API_URL);
-      const data = await response.json();
-      return data; // Assume data is an array of quotes
-    } catch (error) {
-      console.error('Error fetching data from server:', error);
-      return [];
-    }
-  }
+  
   // Replace this URL with your actual API endpoint
 const API_URL = 'https://jsonplaceholder.typicode.com/posts';
+
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+    return data; // Assume data is an array of quotes
+  } catch (error) {
+    console.error('Error fetching data from server:', error);
+    return [];
+  }
+}
 
 // Function to post data to the server
 async function postData(data) {
@@ -192,6 +193,56 @@ async function postData(data) {
   }
 }
 
+// Fetch data from the mock API
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+    return data; // Assume data is an array of quotes
+  } catch (error) {
+    console.error('Error fetching data from server:', error);
+    return [];
+  }
+}
+
+// Polling interval (in milliseconds)
+const POLLING_INTERVAL = 60000; // 1 minute
+
+// Function to periodically check for updates
+function startPolling() {
+  setInterval(async () => {
+    const serverQuotes = await fetchQuotesFromServer();
+    syncLocalData(serverQuotes);
+  }, POLLING_INTERVAL);
+}
+
+// Sync local data with server data
+function syncLocalData(serverQuotes) {
+  const localQuotes = JSON.parse(localStorage.getItem('quotes')) || [];
+
+  // Merge server data with local data
+  // In this example, assume the server data takes precedence
+  const mergedQuotes = serverQuotes.map(serverQuote => {
+    const localQuoteIndex = localQuotes.findIndex(localQuote => localQuote.id === serverQuote.id);
+    return localQuoteIndex !== -1 ? localQuotes[localQuoteIndex] : serverQuote;
+  });
+
+  // Save merged quotes to local storage
+  localStorage.setItem('quotes', JSON.stringify(mergedQuotes));
+
+  // Display updated quotes or perform other actions as needed
+  displayQuotes();
+}
+
+// Function to display quotes (replace with your actual implementation)
+function displayQuotes() {
+  console.log('Displaying quotes:', JSON.parse(localStorage.getItem('quotes')));
+}
+
+// Start polling for updates
+startPolling();
+
+
 // Example usage: Posting a new quote object
 const newQuote = {
   text: 'Example quote text',
@@ -201,8 +252,7 @@ const newQuote = {
 postData(newQuote);
 
 
-  // Polling interval (in milliseconds)
-  const POLLING_INTERVAL = 60000; // 1 minute
+ 
 
   // Function to periodically check for updates
   function startPolling() {
