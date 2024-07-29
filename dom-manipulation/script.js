@@ -155,9 +155,10 @@ populateCategories();
  
 
   
-  // Replace this URL with your actual API endpoint
+  
 const API_URL = 'https://jsonplaceholder.typicode.com/posts';
 
+// Fetch data from the mock API
 async function fetchQuotesFromServer() {
   try {
     const response = await fetch(API_URL);
@@ -168,6 +169,20 @@ async function fetchQuotesFromServer() {
     return [];
   }
 }
+
+// Polling interval (in milliseconds)
+const POLLING_INTERVAL = 60000; // 1 minute
+
+// Function to periodically check for updates
+function startPolling() {
+  setInterval(async () => {
+    const serverQuotes = await fetchQuotesFromServer();
+    syncLocalData(serverQuotes);
+  }, POLLING_INTERVAL);
+}
+
+startPolling(); // Start polling when the app initializes
+
 
 // Function to post data to the server
 async function postData(data) {
@@ -205,8 +220,7 @@ async function fetchQuotesFromServer() {
   }
 }
 
-// Polling interval (in milliseconds)
-const POLLING_INTERVAL = 60000; // 1 minute
+
 
 // Function to periodically check for updates
 function startPolling() {
