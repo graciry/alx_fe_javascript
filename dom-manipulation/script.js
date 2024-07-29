@@ -166,7 +166,7 @@ populateCategories();
     }
   }
   // Replace this URL with your actual API endpoint
-const API_URL = 'https://api.github.com/users/Bard';
+const API_URL = 'https://jsonplaceholder.typicode.com/posts';
 
 // Function to post data to the server
 async function postData(data) {
