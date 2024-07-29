@@ -76,6 +76,32 @@ createAddQuoteForm();
       categoryFilter.appendChild(option);
     });
   }
+  // Function to populate categories dynamically in a dropdown menu
+function populateCategories() {
+  const categoryFilter = document.getElementById('categoryFilter');
+  const uniqueCategories = [...new Set(quotes.map(quote => quote.category))];
+  
+  // Clear existing options
+  categoryFilter.innerHTML = '';
+  
+  // Add default option
+  const defaultOption = document.createElement('option');
+  defaultOption.value = 'all';
+  defaultOption.textContent = 'All Categories';
+  categoryFilter.appendChild(defaultOption);
+  
+  // Add options for each unique category
+  uniqueCategories.forEach(category => {
+    const option = document.createElement('option');
+    option.value = category;
+    option.textContent = category;
+    categoryFilter.appendChild(option);
+  });
+}
+
+// Call the function to populate categories initially
+populateCategories();
+
 
   // Function to filter quotes based on the selected category
   function filterQuotes() {
