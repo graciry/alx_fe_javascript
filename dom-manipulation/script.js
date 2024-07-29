@@ -45,6 +45,25 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('Please enter both quote text and category.');
     }
   }
+  // Function to create and add a form for adding new quotes dynamically
+function createAddQuoteForm() {
+  const formContainer = document.createElement('div');
+  formContainer.innerHTML = `
+    <div>
+      <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+      <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+      <button id="addQuoteButton">Add Quote</button>
+    </div>
+  `;
+  
+  // Append the form to a parent element in your HTML
+  const parentElement = document.getElementById('formContainer'); // Replace with your actual parent element
+  parentElement.appendChild(formContainer);
+}
+
+// Call the function to create the add quote form
+createAddQuoteForm();
+
 
   // Function to update the category filter dropdown
   function updateCategoryFilter() {
