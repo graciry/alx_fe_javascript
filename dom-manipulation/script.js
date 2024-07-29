@@ -152,8 +152,7 @@ populateCategories();
     fileReader.readAsText(event.target.files[0]);
   }
 
-  // Replace this URL with your actual mock API URL
-  const API_URL = 'https://jsonplaceholder.typicode.com/posts';
+ 
 
   // Fetch data from the mock API
   async function fetchQuotesFromServer() {
@@ -166,6 +165,41 @@ populateCategories();
       return [];
     }
   }
+  // Replace this URL with your actual API endpoint
+const API_URL = 'https://api.github.com/users/Bard';
+
+// Function to post data to the server
+async function postData(data) {
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST', // HTTP POST method
+      headers: {
+        'Content-Type': 'application/json' // Specify content type as JSON
+      },
+      body: JSON.stringify(data) // Convert data to JSON format
+    });
+    
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const responseData = await response.json();
+    console.log('Server response:', responseData);
+    return responseData; // Return the response data
+  } catch (error) {
+    console.error('Error posting data:', error);
+    return null; // Handle errors gracefully
+  }
+}
+
+// Example usage: Posting a new quote object
+const newQuote = {
+  text: 'Example quote text',
+  category: 'Example category'
+};
+
+postData(newQuote);
+
 
   // Polling interval (in milliseconds)
   const POLLING_INTERVAL = 60000; // 1 minute
