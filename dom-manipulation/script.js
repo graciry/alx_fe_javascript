@@ -169,6 +169,36 @@ async function fetchQuotesFromServer() {
     return [];
   }
 }
+// Function to sync local data with server data
+async function syncQuotes() {
+  try {
+    const serverQuotes = await fetchQuotesFromServer();
+    const localQuotes = JSON.parse(localStorage.getItem('quotes')) || [];
+
+    // Merge server data with local data
+    // Basic conflict resolution: Server data takes precedence
+    const mergedQuotes = serverQuotes.map(serverQuote => {
+      const localQuoteIndex = localQuotes.findIndex(localQuote => localQuote.id === serverQuote.id);
+      if (localQuoteIndex > -1) {
+        return serverQuote; // Use server data
+      }
+      return serverQuote;
+    });
+    // Add new quotes from server that are not in local storage
+    const newQuotes = serverQuotes.filter(serverQuote => !localQuotes.some(localQuote => localQuote.id === serverQuote.id));
+    mergedQuotes.push(...newQuotes);
+
+    // Save merged quotes to local storage
+    localStorage.setItem('quotes', JSON.stringify(mergedQuotes));
+
+    // Display updated quotes or handle conflict resolution UI here
+    // Example: update UI or trigger notification
+    console.log('Sync complete');
+  } catch (error) {
+    console.error('Error syncing data:', error);
+  }
+}
+
 
 // Polling interval (in milliseconds)
 const POLLING_INTERVAL = 60000; // 1 minute
